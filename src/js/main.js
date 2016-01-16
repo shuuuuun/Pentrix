@@ -3,13 +3,21 @@
   
   var $win = $(win);
   var util = new ns.Util();
+  var tetris = new ns.Tetris();
   
+  
+  // init
   if (ns.winW < 375) {
     $('meta[name=viewport]').attr('content', 'width=375,user-scalable=no');
   }
-  
-  var tetris = new ns.Tetris();
   tetris.newGame();
+  
+  
+  // Event
+  tetris.on('gamequit',function(){
+    tetris.newGame();
+  });
+  
   
   // debug
   var query = util.getQueryString();
