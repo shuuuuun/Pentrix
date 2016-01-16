@@ -71,21 +71,21 @@
         0, 0, 0, 0, 0 ],
     ];
     this.COLOR_LIST = [
-      "#FF6666",
-      "#FFCC66",
-      "#FFFF66",
-      "#CCFF66",
-      "#66FF66",
-      "#66FFCC",
-      "#66FFFF",
-      "#66CCFF",
-      "#6666FF",
-      "#CC66FF",
-      "#FF66FF",
-      "#FF6FCF",
-      "#FF00FF",
-      "#FF8000",
-      "#4C4C4C",
+      '#FF6666',
+      '#FFCC66',
+      '#FFFF66',
+      '#CCFF66',
+      '#66FF66',
+      '#66FFCC',
+      '#66FFFF',
+      '#66CCFF',
+      '#6666FF',
+      '#CC66FF',
+      '#FF66FF',
+      '#FF6FCF',
+      '#FF00FF',
+      '#FF8000',
+      '#4C4C4C',
     ];
     this.KEYS = {
       37: 'left',  // ←
@@ -365,7 +365,7 @@
     // calc score
     this.score += (clearLineLength <= 1) ? clearLineLength : Math.pow(2, clearLineLength);
     
-    if (clearLineLength > 0) this.trigger("clearline", filledRowList);
+    if (clearLineLength > 0) this.trigger('clearline', filledRowList);
     
     function effect(x, y) {
       return function(){
