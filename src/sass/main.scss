@@ -38,7 +38,6 @@ body * {
   display: block;
   margin: 0 auto;
   background-color: #eee;
-  @include transform(rotateX(180deg));
 }
 
 #nextBlock {
@@ -46,7 +45,6 @@ body * {
   background-color: #eee;
   // border: 1px solid #999;
   box-shadow: #ccc 0 0 10px 5px;
-  @include transform(rotateX(180deg));
   position: absolute;
   bottom: 0;
 }

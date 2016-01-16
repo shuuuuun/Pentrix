@@ -61,6 +61,16 @@
     return function(callback){ setTimeout(callback,time); };
   };
   
+  Util.prototype.sleep = function(time){ // Deferred
+    return function(){
+      var dfd = $.Deferred();
+      setTimeout(function(){
+        dfd.resolve();
+      }, time);
+      return dfd.promise(); 
+    };
+  };
+  
   Util.prototype.zeroPadding = function(num, len){
       return (new Array(len).join("0") + num).slice(-len);
   };
