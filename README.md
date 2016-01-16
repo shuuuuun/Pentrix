@@ -1,3 +1,13 @@
+[dionyziz/canvas-tetris](https://github.com/dionyziz/canvas-tetris)のリポジトリのコードをベースに、クラス化して、リファクタリングして、汎用性を上げたりした。
+
+（githubって同じリポジトリを2回forkできないのね。）
+
+
+
+forked from: https://github.com/dionyziz/canvas-tetris
+
+=======
+
 A very simple HTML5 version of Tetris, for educational purposes, made in 45 minutes.
 
 Watch the making-of timelapse:
