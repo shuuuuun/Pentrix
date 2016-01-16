@@ -4,13 +4,8 @@
   var $win = $(win);
   var util = new ns.Util();
   
-  if (ns.ua.isSP) {
-    // sp
-    $(".onlypc").remove();
-  }
-  else {
-    // pc
-    $(".onlysp").remove();
+  if (ns.winW < 375) {
+    $('meta[name=viewport]').attr('content', 'width=375,user-scalable=no');
   }
   
   var tetris = new ns.Tetris();
