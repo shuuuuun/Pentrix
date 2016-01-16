@@ -10,7 +10,7 @@
     
     this.COLS = 15;
     this.ROWS = 30;
-    this.BLOCK_SIZE = 14;
+    this.BLOCK_SIZE = 20;
     this.NUMBER_OF_BLOCK = 5;
     this.HIDDEN_ROWS = this.NUMBER_OF_BLOCK;
     this.LOGICAL_ROWS = this.ROWS + this.HIDDEN_ROWS;
@@ -97,11 +97,11 @@
     
     this.$clearLine = $('#clearLine');
     this.$score = $('#score');
-    this.$cnvs = $('#canvas');
-    this.$cnvsNext = $('#nextBlock');
-    this.cnvs = document.getElementById('canvas');
+    this.$cnvs = $('#game-canvas');
+    this.$cnvsNext = $('#next-canvas');
+    this.cnvs = this.$cnvs.get(0);
     this.ctx = this.cnvs.getContext('2d');
-    this.cnvsNext = document.getElementById('nextBlock');
+    this.cnvsNext = this.$cnvsNext.get(0);
     this.ctxNext = this.cnvsNext.getContext('2d');
     
     this.$cnvs.width(this.WIDTH);
@@ -166,8 +166,8 @@
       // var blockMoveX = (info.moveX / _this.BLOCK_SIZE) | 0;
       var moveX  = info.touchX - touchStartX;
       var moveY  = info.touchY - touchStartY;
-      var blockMoveX = -(moveX / _this.BLOCK_SIZE) | 0; // 左右反転
-      var blockMoveY = -(moveY / _this.BLOCK_SIZE) | 0; // 上下反転
+      var blockMoveX = (moveX / _this.BLOCK_SIZE) | 0;
+      var blockMoveY = (moveY / _this.BLOCK_SIZE) | 0;
       
       if (isFreeze) return;
       

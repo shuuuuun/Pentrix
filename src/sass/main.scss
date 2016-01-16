@@ -31,22 +31,23 @@ body * {
 .container {
   position: relative;
   max-width: 375px;
-  margin: 0 auto;
+  margin: 10px auto;
 }
 
-#canvas {
+#game-canvas {
   display: block;
   margin: 0 auto;
   background-color: #eee;
 }
 
-#nextBlock {
+#next-canvas {
   display: block;
   background-color: #eee;
   // border: 1px solid #999;
   box-shadow: #ccc 0 0 10px 5px;
   position: absolute;
-  bottom: 0;
+  top: 0;
+  right: 0;
 }
 
 .info-display {
