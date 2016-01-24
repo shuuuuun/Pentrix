@@ -2,8 +2,11 @@
 
 （githubって同じリポジトリを2回forkできないのね。）
 
-ついでに、4x4のtetrisを5x5に変え、pentrixとした。
-スマホでのタッチ操作にも対応した。
+
+ついでに、4x4のtetrisを5x5に変え、pentrixにした。
+
+あと、スマホでのタッチ操作にも対応した。
+
 
 demo: https://shuuuuun.github.io/Pentrix/
 
