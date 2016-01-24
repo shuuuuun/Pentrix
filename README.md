@@ -2,6 +2,9 @@
 
 （githubって同じリポジトリを2回forkできないのね。）
 
+ついでに、4x4のtetrisを5x5に変え、pentrixとした。
+
+demo: https://shuuuuun.github.io/Pentrix/
 
 
 forked from: https://github.com/dionyziz/canvas-tetris
