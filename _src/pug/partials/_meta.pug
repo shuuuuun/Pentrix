@@ -1,12 +1,19 @@
 meta(charset="utf-8")
-meta(name="viewport" content="width=device-width,user-scalable=no")
+meta(name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0")
 
 title=title
 
 if meta_description
   meta(name="description" content=meta_description)
 if meta_keywords
-  meta(name="keywords" content=meta_keywords)
+  meta(name="keywords" content=meta_keywords.join(","))
+
+//- IEで「互換モード」で表示されるのを防ぐための指定
+meta(http-equiv="X-UA-Compatible", content="IE=Edge")
+
+if url
+  //- このページをはてぶ・シェアする際、使われるべきURLを明示する指定
+  link(rel="canonical" href=url)
 
 if og_description
   meta(property="og:locale" content="ja_JP")

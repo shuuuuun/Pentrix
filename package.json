@@ -3,25 +3,47 @@
   "version": "1.0.0",
   "author": "motoki shun",
   "license": "MIT",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "scripts": {
     "start": "gulp",
+    "server": "gulp server",
+    "watch": "gulp watch",
     "build": "gulp build",
-    "watch": "gulp watch"
+    "build-html": "gulp html",
+    "build-css": "gulp css",
+    "build-js": "gulp js"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-compass": "^2.1.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-if": "^2.0.0",
-    "gulp-ignore": "^2.0.1",
-    "gulp-jade": "^1.0.1",
-    "gulp-minify-css": "^1.2.2",
-    "gulp-plumber": "^1.0.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.2.0",
-    "gulp-util": "^3.0.6",
-    "gulp-watch": "^4.3.3",
-    "gulp-webserver": "^0.9.1",
-    "jquery": "^2.2.0"
+    "babel-eslint": "latest",
+    "babel-preset-es2015": "latest",
+    "babelify": "latest",
+    "browserify": "latest",
+    "gulp": "latest",
+    "gulp-eslint": "latest",
+    "gulp-if": "latest",
+    "gulp-ignore": "latest",
+    "gulp-notify": "latest",
+    "gulp-pleeease": "latest",
+    "gulp-plumber": "latest",
+    "gulp-pug": "latest",
+    "gulp-rename": "latest",
+    "gulp-sass": "latest",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "gulp-watch": "latest",
+    "jquery": "latest",
+    "jquery-deferred": "latest",
+    "koko": "latest",
+    "read-config": "latest",
+    "reset-css": "latest",
+    "vinyl-buffer": "latest",
+    "vinyl-source-stream": "latest"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   }
 }
