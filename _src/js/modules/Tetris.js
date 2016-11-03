@@ -265,12 +265,33 @@ export default class Tetris extends EventEmitter {
   }
 
   clearLines() {
-    var _this = this;
     var clearLineLength = 0; // 同時消去ライン数
     var filledRowList = [];
     var blankRow = Array.apply(null, Array(COLS)).map(() => 0); // => [0,0,0,0,0,...]
     var dfd = $.Deferred();
     dfd.resolve();
+    
+    const effect = (x, y) => {
+      return () => {
+        var dfd = $.Deferred();
+        this.board[y][x] = CLEARLINE_BLOCK_INDEX;
+        dfd.resolve();
+        return dfd.promise();
+      };
+    }
+    const dropRow = (x, y) => {
+      return () => {
+        var dfd = $.Deferred();
+        if (!filledRowList.length) return;
+        filledRowList.reverse().forEach((row) => {
+          this.board.splice(row, 1);
+          this.board.unshift(blankRow);
+        });
+        dfd.resolve();
+        return dfd.promise();
+      };
+    }
+    
     for ( var y = LOGICAL_ROWS - 1; y >= 0; --y ) {
       var isRowFilled = this.board[y].every((val) => val !== 0);
       if (!isRowFilled) continue;
@@ -294,33 +315,22 @@ export default class Tetris extends EventEmitter {
     this.score += (clearLineLength <= 1) ? clearLineLength : Math.pow(2, clearLineLength);
     
     if (clearLineLength > 0) this.emit('clearline', filledRowList);
-    
-    function effect(x, y) {
-      return function(){
-        var dfd = $.Deferred();
-        _this.board[y][x] = CLEARLINE_BLOCK_INDEX;
-        dfd.resolve();
-        return dfd.promise();
-      };
-    }
-    function dropRow(x, y) {
-      return function(){
-        var dfd = $.Deferred();
-        if (!filledRowList.length) return;
-        filledRowList.reverse().forEach((row) => {
-          _this.board.splice(row, 1);
-          _this.board.unshift(blankRow);
-        });
-        dfd.resolve();
-        return dfd.promise();
-      };
-    }
   }
 
   gameOverEffect() {
-    var _this = this;
     var dfd = $.Deferred();
     dfd.resolve();
+    
+    const effect = (x, y) => {
+      return () => {
+        var dfd = $.Deferred();
+        this.board[y][x] = GAMEOVER_BLOCK_INDEX;
+        this.emit('gameOverEffectTick');
+        dfd.resolve();
+        return dfd.promise();
+      };
+    }
+    
     for ( var y = 0; y < LOGICAL_ROWS; ++y ) {
       for ( var x = 0; x < COLS; ++x ) {
         if (!this.board[y][x]) continue;
@@ -331,15 +341,6 @@ export default class Tetris extends EventEmitter {
       }
     }
     this.emit('gameOverEffect');
-    function effect(x, y) {
-      return function(){
-        var dfd = $.Deferred();
-        _this.board[y][x] = GAMEOVER_BLOCK_INDEX;
-        _this.emit('gameOverEffectTick');
-        dfd.resolve();
-        return dfd.promise();
-      };
-    }
     return dfd.then(Util.sleep(500)).promise();
   }
 
