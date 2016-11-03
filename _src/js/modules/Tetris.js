@@ -279,7 +279,7 @@ export default class Tetris extends EventEmitter {
         return d.promise();
       };
     }
-    const dropRow = (x, y) => {
+    const dropRow = () => {
       return () => {
         const d = $.Deferred();
         if (!filledRowList.length) return;
@@ -309,7 +309,7 @@ export default class Tetris extends EventEmitter {
       }
     }
     // clear line drop
-    dfd.then(dropRow(x, y));
+    dfd.then(dropRow());
     
     // calc score
     this.score += (clearLineLength <= 1) ? clearLineLength : Math.pow(2, clearLineLength);
