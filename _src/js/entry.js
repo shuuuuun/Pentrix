@@ -1,7 +1,7 @@
 import Tetris from './modules/Tetris';
 
-var tetris = new Tetris();
-var container = document.querySelector('.container');
+const tetris = new Tetris();
+const container = document.querySelector('.container');
 
 
 // Event

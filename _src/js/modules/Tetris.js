@@ -85,13 +85,13 @@ export default class Tetris extends EventEmitter {
   }
 
   setTouchEvent() {
-    var touch = new TouchController({
+    const touch = new TouchController({
       element: this.cnvs
     });
-    var touchStartX;
-    var touchStartY;
-    var isTap = false;
-    var isFreeze = false;
+    let touchStartX;
+    let touchStartY;
+    let isTap = false;
+    let isFreeze = false;
     
     touch.on('touchstart',(info) => {
       touchStartX = info.touchStartX;
@@ -100,17 +100,17 @@ export default class Tetris extends EventEmitter {
       isFreeze = false;
     });
     touch.on('touchmove',(info) => {
-      // var blockMoveX = (info.moveX / BLOCK_SIZE) | 0;
-      var moveX  = info.touchX - touchStartX;
-      var moveY  = info.touchY - touchStartY;
-      var blockMoveX = (moveX / BLOCK_SIZE) | 0;
-      var blockMoveY = (moveY / BLOCK_SIZE) | 0;
+      // const blockMoveX = (info.moveX / BLOCK_SIZE) | 0;
+      const moveX  = info.touchX - touchStartX;
+      const moveY  = info.touchY - touchStartY;
+      let blockMoveX = (moveX / BLOCK_SIZE) | 0;
+      let blockMoveY = (moveY / BLOCK_SIZE) | 0;
       
       if (isFreeze) return;
       
       // 1マスずつバリデーション（すり抜け対策）
       while (!!blockMoveX) {
-        var sign = blockMoveX / Math.abs(blockMoveX); // 1 or -1
+        const sign = blockMoveX / Math.abs(blockMoveX); // 1 or -1
         if (!this.valid(sign, 0)) break;
         this.currentX += sign;
         blockMoveX -= sign;
@@ -166,9 +166,9 @@ export default class Tetris extends EventEmitter {
 
   initBoad() {
     this.board = [];
-    for ( var y = 0; y < LOGICAL_ROWS; ++y ) {
+    for ( let y = 0; y < LOGICAL_ROWS; ++y ) {
       this.board[y] = [];
-      for ( var x = 0; x < COLS; ++x ) {
+      for ( let x = 0; x < COLS; ++x ) {
         this.board[y][x] = 0;
       }
     }
@@ -176,9 +176,9 @@ export default class Tetris extends EventEmitter {
 
   initBlock() {
     this.currentBlock = [];
-    for ( var y = 0; y < NUMBER_OF_BLOCK; ++y ) {
+    for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
       this.currentBlock[y] = [];
-      for ( var x = 0; x < NUMBER_OF_BLOCK; ++x ) {
+      for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
         this.currentBlock[y][x] = 0;
       }
     }
@@ -197,14 +197,14 @@ export default class Tetris extends EventEmitter {
   }
 
   createNextBlock() {
-    var index = Math.floor(Math.random() * SHAPE_LIST.length);
-    var shape = SHAPE_LIST[index];
+    const index = Math.floor(Math.random() * SHAPE_LIST.length);
+    const shape = SHAPE_LIST[index];
     this.nextBlockId = index;
     this.nextBlock = [];
-    for (var y = 0; y < NUMBER_OF_BLOCK; ++y) {
+    for (let y = 0; y < NUMBER_OF_BLOCK; ++y) {
       this.nextBlock[y] = [];
-      for (var x = 0; x < NUMBER_OF_BLOCK; ++x) {
-        var i = NUMBER_OF_BLOCK * y + x;
+      for (let x = 0; x < NUMBER_OF_BLOCK; ++x) {
+        const i = NUMBER_OF_BLOCK * y + x;
         this.nextBlock[y][x] = (!!shape[i]) ? (index + 1) : 0;
       }
     }
@@ -233,7 +233,7 @@ export default class Tetris extends EventEmitter {
   }
 
   quitGame() {
-    var dfd = $.Deferred();
+    const dfd = $.Deferred();
     this.gameOverEffect().then(() => {
       this.isPlayng = false;
       this.emit('gamequit');
@@ -253,10 +253,10 @@ export default class Tetris extends EventEmitter {
   }
 
   freeze() {
-    for ( var y = 0; y < NUMBER_OF_BLOCK; ++y ) {
-      for ( var x = 0; x < NUMBER_OF_BLOCK; ++x ) {
-        var boardX = x + this.currentX;
-        var boardY = y + this.currentY;
+    for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
+      for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
+        const boardX = x + this.currentX;
+        const boardY = y + this.currentY;
         if (!this.currentBlock[y][x] || boardY < 0) continue;
         this.board[boardY][boardX] = this.currentBlock[y][x];
       }
@@ -265,35 +265,35 @@ export default class Tetris extends EventEmitter {
   }
 
   clearLines() {
-    var clearLineLength = 0; // 同時消去ライン数
-    var filledRowList = [];
-    var blankRow = Array.apply(null, Array(COLS)).map(() => 0); // => [0,0,0,0,0,...]
-    var dfd = $.Deferred();
+    const blankRow = Array.apply(null, Array(COLS)).map(() => 0); // => [0,0,0,0,0,...]
+    let clearLineLength = 0; // 同時消去ライン数
+    let filledRowList = [];
+    let dfd = $.Deferred();
     dfd.resolve();
     
     const effect = (x, y) => {
       return () => {
-        var dfd = $.Deferred();
+        const d = $.Deferred();
         this.board[y][x] = CLEARLINE_BLOCK_INDEX;
-        dfd.resolve();
-        return dfd.promise();
+        d.resolve();
+        return d.promise();
       };
     }
     const dropRow = (x, y) => {
       return () => {
-        var dfd = $.Deferred();
+        const d = $.Deferred();
         if (!filledRowList.length) return;
         filledRowList.reverse().forEach((row) => {
           this.board.splice(row, 1);
           this.board.unshift(blankRow);
         });
-        dfd.resolve();
-        return dfd.promise();
+        d.resolve();
+        return d.promise();
       };
     }
     
-    for ( var y = LOGICAL_ROWS - 1; y >= 0; --y ) {
-      var isRowFilled = this.board[y].every((val) => val !== 0);
+    for ( let y = LOGICAL_ROWS - 1; y >= 0; --y ) {
+      const isRowFilled = this.board[y].every((val) => val !== 0);
       if (!isRowFilled) continue;
       filledRowList.push(y);
       clearLineLength++;
@@ -301,7 +301,7 @@ export default class Tetris extends EventEmitter {
       this.tickInterval -= SPEEDUP_RATE; // 1行消去で速度を上げる
       
       // clear line effect
-      for ( var x = 0; x < COLS; ++x ) {
+      for ( let x = 0; x < COLS; ++x ) {
         if (!this.board[y][x]) continue;
         dfd = dfd
           .then(effect(x, y))
@@ -318,21 +318,21 @@ export default class Tetris extends EventEmitter {
   }
 
   gameOverEffect() {
-    var dfd = $.Deferred();
+    let dfd = $.Deferred();
     dfd.resolve();
     
     const effect = (x, y) => {
       return () => {
-        var dfd = $.Deferred();
+        const d = $.Deferred();
         this.board[y][x] = GAMEOVER_BLOCK_INDEX;
         this.emit('gameOverEffectTick');
-        dfd.resolve();
-        return dfd.promise();
+        d.resolve();
+        return d.promise();
       };
     }
     
-    for ( var y = 0; y < LOGICAL_ROWS; ++y ) {
-      for ( var x = 0; x < COLS; ++x ) {
+    for ( let y = 0; y < LOGICAL_ROWS; ++y ) {
+      for ( let x = 0; x < COLS; ++x ) {
         if (!this.board[y][x]) continue;
         // this.board[y][x] = BLOCK_IMAGE_LIST.length - 1;
         dfd = dfd
@@ -368,7 +368,7 @@ export default class Tetris extends EventEmitter {
         return false;
         break;
       case 'rotate':
-        var rotatedBlock = this.rotate(this.currentBlock);
+        const rotatedBlock = this.rotate(this.currentBlock);
         if ( this.valid(0, 0, rotatedBlock) ) {
           this.currentBlock = rotatedBlock;
           return true;
@@ -379,10 +379,10 @@ export default class Tetris extends EventEmitter {
   }
 
   rotate() {
-    var newBlock = [];
-    for ( var y = 0; y < NUMBER_OF_BLOCK; ++y ) {
+    const newBlock = [];
+    for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
       newBlock[y] = [];
-      for ( var x = 0; x < NUMBER_OF_BLOCK; ++x ) {
+      for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
         newBlock[y][x] = this.currentBlock[NUMBER_OF_BLOCK - 1 - x][y];
       }
     }
@@ -408,14 +408,14 @@ export default class Tetris extends EventEmitter {
   valid(offsetX, offsetY, newBlock) {
     offsetX = offsetX || 0;
     offsetY = offsetY || 0;
-    var nextX = this.currentX + offsetX;
-    var nextY = this.currentY + offsetY;
-    var block = newBlock || this.currentBlock;
+    const nextX = this.currentX + offsetX;
+    const nextY = this.currentY + offsetY;
+    const block = newBlock || this.currentBlock;
     
-    for ( var y = 0; y < NUMBER_OF_BLOCK; ++y ) {
-      for ( var x = 0; x < NUMBER_OF_BLOCK; ++x ) {
-        var boardX = x + nextX;
-        var boardY = y + nextY;
+    for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
+      for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
+        const boardX = x + nextX;
+        const boardY = y + nextY;
         if (!block[y][x]) continue;
         if ( typeof this.board[boardY] === 'undefined' // 次の位置が盤面外なら
           || typeof this.board[boardY][boardX] === 'undefined' // 盤面外なら
@@ -433,11 +433,11 @@ export default class Tetris extends EventEmitter {
 
   checkGameOver() {
     // ブロックの全てが画面外ならゲームオーバー
-    var isGameOver = true;
-    for ( var y = 0; y < NUMBER_OF_BLOCK; ++y ) {
-      for ( var x = 0; x < NUMBER_OF_BLOCK; ++x ) {
-        var boardX = x + this.currentX;
-        var boardY = y + this.currentY;
+    let isGameOver = true;
+    for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
+      for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
+        const boardX = x + this.currentX;
+        const boardY = y + this.currentY;
         if (boardY >= HIDDEN_ROWS) {
           isGameOver = false;
           break;
@@ -462,11 +462,11 @@ export default class Tetris extends EventEmitter {
 
   renderBoard() {
     // 盤面を描画する
-    for (var x = 0; x < COLS; ++x) {
-      for (var y = 0; y < ROWS; ++y) {
-        var boardX = x;
-        var boardY = y + HIDDEN_ROWS;
-        var blockId = this.board[boardY][boardX] - 1;
+    for (let x = 0; x < COLS; ++x) {
+      for (let y = 0; y < ROWS; ++y) {
+        const boardX = x;
+        const boardY = y + HIDDEN_ROWS;
+        const blockId = this.board[boardY][boardX] - 1;
         if (!this.board[boardY][boardX] || blockId < 0) continue;
         this.drawBlock(x, y, blockId);
       }
@@ -475,12 +475,12 @@ export default class Tetris extends EventEmitter {
 
   renderCurrentBlock() {
     // 操作ブロックを描画する
-    for (var y = 0; y < NUMBER_OF_BLOCK; ++y) {
-      for (var x = 0; x < NUMBER_OF_BLOCK; ++x) {
-        var blockId = this.currentBlock[y][x] - 1;
+    for (let y = 0; y < NUMBER_OF_BLOCK; ++y) {
+      for (let x = 0; x < NUMBER_OF_BLOCK; ++x) {
+        const blockId = this.currentBlock[y][x] - 1;
         if (!this.currentBlock[y][x] || blockId < 0) continue;
-        var drawX = x + this.currentX;
-        var drawY = y + this.currentY - HIDDEN_ROWS;
+        const drawX = x + this.currentX;
+        const drawY = y + this.currentY - HIDDEN_ROWS;
         this.drawBlock(drawX, drawY, blockId);
       }
     }
@@ -489,9 +489,9 @@ export default class Tetris extends EventEmitter {
   renderNextBlock() {
     // Nextブロック描画
     this.ctxNext.clearRect(0, 0, NEXT_WIDTH, NEXT_HEIGHT);
-    for (var y = 0; y < NUMBER_OF_BLOCK; ++y) {
-      for (var x = 0; x < NUMBER_OF_BLOCK; ++x) {
-        var blockId = this.nextBlock[y][x] - 1;
+    for (let y = 0; y < NUMBER_OF_BLOCK; ++y) {
+      for (let x = 0; x < NUMBER_OF_BLOCK; ++x) {
+        const blockId = this.nextBlock[y][x] - 1;
         if (!this.nextBlock[y][x] || blockId < 0) continue;
         this.drawNextBlock(x, y, blockId);
       }
@@ -499,18 +499,18 @@ export default class Tetris extends EventEmitter {
   }
 
   drawBlock(x, y, id) {
-    var blockX = BLOCK_SIZE * x;
-    var blockY = BLOCK_SIZE * y;
-    var blockSize = BLOCK_SIZE;
+    const blockX = BLOCK_SIZE * x;
+    const blockY = BLOCK_SIZE * y;
+    const blockSize = BLOCK_SIZE;
     this.ctx.fillStyle = COLOR_LIST[id];
     this.ctx.fillRect( blockX, blockY, blockSize, blockSize );
     this.ctx.strokeRect( blockX, blockY, blockSize, blockSize );
   }
 
   drawNextBlock(x, y, id) {
-    var blockX = BLOCK_SIZE * x;
-    var blockY = BLOCK_SIZE * y;
-    var blockSize = BLOCK_SIZE;
+    const blockX = BLOCK_SIZE * x;
+    const blockY = BLOCK_SIZE * y;
+    const blockSize = BLOCK_SIZE;
     this.ctxNext.fillStyle = COLOR_LIST[id];
     this.ctxNext.fillRect( blockX, blockY, blockSize, blockSize );
     this.ctxNext.strokeRect( blockX, blockY, blockSize, blockSize );
