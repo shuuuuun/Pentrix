@@ -1,16 +1,16 @@
 import Pentrix from './modules/Pentrix';
 
+
+// Init
 const pentrix = new Pentrix();
 const container = document.querySelector('.container');
 
 
 // Event
-pentrix.once('gamestart', () => {
-});
 pentrix.on('gamequit', () => {
   pentrix.newGame();
 });
 
 
-// start
+// Start
 pentrix.newGame();

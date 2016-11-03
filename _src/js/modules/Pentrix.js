@@ -241,7 +241,6 @@ export default class pentrix extends EventEmitter {
     });
     return dfd.promise();
   }
-  // pentrix.prototype.stopGame = pentrix.prototype.quitGame; // alias
 
   pauseGame() {
     clearTimeout(this.tickId);
