@@ -22,7 +22,7 @@ export const START_Y = 0;
 export const CLEARLINE_BLOCK_INDEX = 14;
 export const GAMEOVER_BLOCK_INDEX = 15;
 
-export const BG_COLOR = '#eee';
+export const BG_COLOR = '#888';
 export const DEFAULT_DROP_DIRECTION = 'down';
 export const COLOR_LIST = [
   '#FF6666',
