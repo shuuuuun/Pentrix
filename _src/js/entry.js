@@ -1,16 +1,16 @@
-import Tetris from './modules/Tetris';
+import Pentrix from './modules/Pentrix';
 
-const tetris = new Tetris();
+const pentrix = new Pentrix();
 const container = document.querySelector('.container');
 
 
 // Event
-tetris.once('gamestart', () => {
+pentrix.once('gamestart', () => {
 });
-tetris.on('gamequit', () => {
-  tetris.newGame();
+pentrix.on('gamequit', () => {
+  pentrix.newGame();
 });
 
 
 // start
-tetris.newGame();
+pentrix.newGame();

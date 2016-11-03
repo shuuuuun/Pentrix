@@ -27,7 +27,7 @@ import {
 } from '../constants';
 import SHAPE_LIST from '../constants/SHAPE_LIST';
 
-export default class Tetris extends EventEmitter {
+export default class pentrix extends EventEmitter {
   constructor(opts = {}) {
     super();
     
@@ -241,7 +241,7 @@ export default class Tetris extends EventEmitter {
     });
     return dfd.promise();
   }
-  // Tetris.prototype.stopGame = Tetris.prototype.quitGame; // alias
+  // pentrix.prototype.stopGame = pentrix.prototype.quitGame; // alias
 
   pauseGame() {
     clearTimeout(this.tickId);
