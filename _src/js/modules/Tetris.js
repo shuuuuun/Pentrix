@@ -31,8 +31,6 @@ export default class Tetris extends EventEmitter {
   constructor(opts = {}) {
     super();
     
-    var _this = this;
-    
     this.cnvs = document.getElementById('game-canvas');
     this.ctx = this.cnvs.getContext('2d');
     this.cnvsNext = document.getElementById('next-canvas');
@@ -44,7 +42,7 @@ export default class Tetris extends EventEmitter {
     if (!opts.disableKey) this.setKeyEvent();
     if (!opts.disableTouch) this.setTouchEvent();
     
-    this.renderId = setInterval(function(){ _this.render(); }, RENDER_INTERVAL);
+    this.renderId = setInterval(() => this.render(), RENDER_INTERVAL);
   }
 
   initCanvasSize() {
@@ -70,28 +68,23 @@ export default class Tetris extends EventEmitter {
   
   // Controller ------------------------------
   setBlurEvent() {
-    var _this = this;
-    
-    window.addEventListener('blur',function(){
-        _this.pauseGame();
+    window.addEventListener('blur', () => {
+      this.pauseGame();
     }, false);
-    window.addEventListener('focus',function(){
-        _this.resumeGame();
+    window.addEventListener('focus', () => {
+      this.resumeGame();
     }, false);
   }
 
   setKeyEvent() {
-    var _this = this;
-    
-    document.addEventListener('keydown', function(evt){
+    document.addEventListener('keydown', (evt) => {
       if (typeof KEYS[evt.keyCode] === 'undefined') return;
       evt.preventDefault();
-      _this.moveBlock(KEYS[evt.keyCode]);
+      this.moveBlock(KEYS[evt.keyCode]);
     }, false);
   }
 
   setTouchEvent() {
-    var _this = this;
     var touch = new TouchController({
       element: this.cnvs
     });
@@ -100,13 +93,13 @@ export default class Tetris extends EventEmitter {
     var isTap = false;
     var isFreeze = false;
     
-    touch.on('touchstart',function(info){
+    touch.on('touchstart',(info) => {
       touchStartX = info.touchStartX;
       touchStartY = info.touchStartY;
       isTap = true;
       isFreeze = false;
     });
-    touch.on('touchmove',function(info){
+    touch.on('touchmove',(info) => {
       // var blockMoveX = (info.moveX / BLOCK_SIZE) | 0;
       var moveX  = info.touchX - touchStartX;
       var moveY  = info.touchY - touchStartY;
@@ -118,23 +111,23 @@ export default class Tetris extends EventEmitter {
       // 1マスずつバリデーション（すり抜け対策）
       while (!!blockMoveX) {
         var sign = blockMoveX / Math.abs(blockMoveX); // 1 or -1
-        if (!_this.valid(sign, 0)) break;
-        _this.currentX += sign;
+        if (!this.valid(sign, 0)) break;
+        this.currentX += sign;
         blockMoveX -= sign;
         touchStartX = info.touchX;
       }
       while (blockMoveY > 0) {
-        if (!_this.valid(0, 1)) break;
-        _this.currentY++;
+        if (!this.valid(0, 1)) break;
+        this.currentY++;
         blockMoveY--;
         touchStartY = info.touchY;
       }
       isTap = false;
     });
-    touch.on('touchend',function(info){
-      if (!!isTap) _this.moveBlock('rotate');
+    touch.on('touchend',(info) => {
+      if (!!isTap) this.moveBlock('rotate');
     });
-    this.on('freeze',function(){
+    this.on('freeze',() => {
       isFreeze = true;
     });
   }
@@ -163,11 +156,10 @@ export default class Tetris extends EventEmitter {
   }
 
   startGame() {
-    var _this = this;
     this.isPlayng = true;
     this.createNewBlock();
     this.createNextBlock();
-    this.renderId = setInterval(function(){ _this.render(); }, RENDER_INTERVAL);
+    this.renderId = setInterval(() => this.render(), RENDER_INTERVAL);
     this.emit('gamestart');
     this.tick();
   }
@@ -221,15 +213,14 @@ export default class Tetris extends EventEmitter {
 
   // メインでループする関数
   tick() {
-    var _this = this;
     clearTimeout(this.tickId);
     if (!this.moveBlock(this.dropDirection)) {
       this.freeze();
       this.clearLines();
       if (this.checkGameOver()) {
         this.emit('gameover');
-        this.quitGame().then(function(){
-          // _this.newGame();
+        this.quitGame().then(() => {
+          // this.newGame();
         });
         return false;
       }
@@ -237,16 +228,15 @@ export default class Tetris extends EventEmitter {
       this.createNewBlock();
       this.createNextBlock();
     }
-    this.tickId = setTimeout(function(){ _this.tick(); }, this.tickInterval);
+    this.tickId = setTimeout(() => this.tick(), this.tickInterval);
     this.emit('tick');
   }
 
   quitGame() {
-    var _this = this;
     var dfd = $.Deferred();
-    this.gameOverEffect().then(function(){
-      _this.isPlayng = false;
-      _this.emit('gamequit');
+    this.gameOverEffect().then(() => {
+      this.isPlayng = false;
+      this.emit('gamequit');
       dfd.resolve();
     });
     return dfd.promise();
@@ -258,9 +248,8 @@ export default class Tetris extends EventEmitter {
   }
 
   resumeGame() {
-    var _this = this;
     if (!this.isPlayng) return;
-    this.tickId = setTimeout(function(){ _this.tick(); }, this.tickInterval);
+    this.tickId = setTimeout(() => this.tick(), this.tickInterval);
   }
 
   freeze() {
@@ -279,13 +268,11 @@ export default class Tetris extends EventEmitter {
     var _this = this;
     var clearLineLength = 0; // 同時消去ライン数
     var filledRowList = [];
-    var blankRow = Array.apply(null, Array(COLS)).map(function(){ return 0; }); // => [0,0,0,0,0,...]
+    var blankRow = Array.apply(null, Array(COLS)).map(() => 0); // => [0,0,0,0,0,...]
     var dfd = $.Deferred();
     dfd.resolve();
     for ( var y = LOGICAL_ROWS - 1; y >= 0; --y ) {
-      var isRowFilled = this.board[y].every(function(val){
-        return val !== 0;
-      });
+      var isRowFilled = this.board[y].every((val) => val !== 0);
       if (!isRowFilled) continue;
       filledRowList.push(y);
       clearLineLength++;
@@ -320,7 +307,7 @@ export default class Tetris extends EventEmitter {
       return function(){
         var dfd = $.Deferred();
         if (!filledRowList.length) return;
-        filledRowList.reverse().forEach(function(row){
+        filledRowList.reverse().forEach((row) => {
           _this.board.splice(row, 1);
           _this.board.unshift(blankRow);
         });
@@ -402,7 +389,7 @@ export default class Tetris extends EventEmitter {
   }
 
   rotateBoard(sign) {
-    const blankRow = Array.apply(null, Array(COLS)).map(function(){ return 0; }); // => [0,0,0,0,0,...]
+    const blankRow = Array.apply(null, Array(COLS)).map(() => 0); // => [0,0,0,0,0,...]
     const newBoard = [];
     for ( let y = 0; y < ROWS; ++y ) {
       newBoard[y] = [];
@@ -528,4 +515,3 @@ export default class Tetris extends EventEmitter {
     this.ctxNext.strokeRect( blockX, blockY, blockSize, blockSize );
   }
 }
-

@@ -5,13 +5,12 @@ var container = document.querySelector('.container');
 
 
 // Event
-tetris.once('gamestart', function(){
+tetris.once('gamestart', () => {
 });
-tetris.on('gamequit', function(){
+tetris.on('gamequit', () => {
   tetris.newGame();
 });
 
 
 // start
 tetris.newGame();
-
