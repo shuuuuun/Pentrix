@@ -149,7 +149,7 @@ export default class pentrix extends EventEmitter {
     this.sumOfClearLines = 0;
     this.score = 0;
     this.frameCount = 0;
-    this.initBoad();
+    this.initBoard();
     this.initBlock();
     this.createNextBlock();
     this.render();
@@ -164,7 +164,7 @@ export default class pentrix extends EventEmitter {
     this.tick();
   }
 
-  initBoad() {
+  initBoard() {
     this.board = [];
     for ( let y = 0; y < LOGICAL_ROWS; ++y ) {
       this.board[y] = [];
