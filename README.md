@@ -1,3 +1,7 @@
+# Pentrix
+
+This is simple puzzle game, like tetris.
+
 Play: https://shuuuuun.github.io/Pentrix/
 
 --
