@@ -23,7 +23,10 @@ import {
   BG_COLOR,
   DEFAULT_DROP_DIRECTION,
   COLOR_LIST,
-  KEYS
+  KEYS,
+  CLEARLINE_BLOCK,
+  GAMEOVER_BLOCK,
+  BLOCK_LIST,
 } from '../constants';
 import SHAPE_LIST from '../constants/SHAPE_LIST';
 
@@ -112,13 +115,13 @@ export default class pentrix extends EventEmitter {
       while (!!blockMoveX) {
         const sign = blockMoveX / Math.abs(blockMoveX); // 1 or -1
         if (!this.valid(sign, 0)) break;
-        this.currentX += sign;
+        this.currentBlock.x += sign;
         blockMoveX -= sign;
         touchStartX = info.touchX;
       }
       while (blockMoveY > 0) {
         if (!this.valid(0, 1)) break;
-        this.currentY++;
+        this.currentBlock.y++;
         blockMoveY--;
         touchStartY = info.touchY;
       }
@@ -157,7 +160,7 @@ export default class pentrix extends EventEmitter {
 
   startGame() {
     this.isPlayng = true;
-    this.createNewBlock();
+    this.createCurrentBlock();
     this.createNextBlock();
     this.renderId = setInterval(() => this.render(), RENDER_INTERVAL);
     this.emit('gamestart');
@@ -175,39 +178,41 @@ export default class pentrix extends EventEmitter {
   }
 
   initBlock() {
-    this.currentBlock = [];
-    for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
-      this.currentBlock[y] = [];
-      for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
-        this.currentBlock[y][x] = 0;
-      }
-    }
-    this.currentBlockId = 0;
-    this.currentX = START_X;
-    this.currentY = START_Y;
+    this.nextBlock = this.createBlock(0);
+    this.currentBlock = this.createBlock(0);
+    this.currentBlock.x = START_X;
+    this.currentBlock.y = START_Y;
   }
 
-  createNewBlock() {
-    if (!this.nextBlock[0]) this.createNextBlock();
-    this.currentBlock = this.nextBlock;
-    this.currentBlockId = this.nextBlockId;
-    this.currentX = START_X;
-    this.currentY = START_Y;
+  createBlock(id = 0) {
+    const blockConst = BLOCK_LIST[id] || {};
+    const shape = blockConst.shape;
+    const block = Object.assign({}, BLOCK_LIST[id], {
+      shape: [],
+      x: 0,
+      y: 0,
+    });
+    for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
+      block.shape[y] = [];
+      for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
+        block.shape[y][x] = shape[y][x] || 0;
+      }
+    }
     this.emit('newblockcreated');
+    return block;
+  }
+
+  createCurrentBlock() {
+    if (!this.nextBlock) this.createNextBlock();
+    this.currentBlock = this.nextBlock;
+    this.currentBlock.x = START_X;
+    this.currentBlock.y = START_Y;
+    this.emit('currentblockcreated');
   }
 
   createNextBlock() {
-    const index = Math.floor(Math.random() * SHAPE_LIST.length);
-    const shape = SHAPE_LIST[index];
-    this.nextBlockId = index;
-    this.nextBlock = [];
-    for (let y = 0; y < NUMBER_OF_BLOCK; ++y) {
-      this.nextBlock[y] = [];
-      for (let x = 0; x < NUMBER_OF_BLOCK; ++x) {
-        const i = NUMBER_OF_BLOCK * y + x;
-        this.nextBlock[y][x] = (!!shape[i]) ? (index + 1) : 0;
-      }
-    }
+    const id = Math.floor(Math.random() * BLOCK_LIST.length);
+    this.nextBlock = this.createBlock(id);
     this.emit('nextblockcreated');
   }
 
@@ -225,7 +230,7 @@ export default class pentrix extends EventEmitter {
         return false;
       }
       this.frameCount++;
-      this.createNewBlock();
+      this.createCurrentBlock();
       this.createNextBlock();
     }
     this.tickId = setTimeout(() => this.tick(), this.tickInterval);
@@ -254,10 +259,10 @@ export default class pentrix extends EventEmitter {
   freeze() {
     for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
       for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
-        const boardX = x + this.currentX;
-        const boardY = y + this.currentY;
-        if (!this.currentBlock[y][x] || boardY < 0) continue;
-        this.board[boardY][boardX] = this.currentBlock[y][x];
+        const boardX = x + this.currentBlock.x;
+        const boardY = y + this.currentBlock.y;
+        if (!this.currentBlock.shape[y][x] || boardY < 0) continue;
+        this.board[boardY][boardX] = this.currentBlock.shape[y][x] ? (this.currentBlock.id + 1) : 0;
       }
     }
     this.emit('freeze');
@@ -347,27 +352,28 @@ export default class pentrix extends EventEmitter {
     switch (code) {
       case 'left':
         if ( this.valid(-1, 0) ) {
-          --this.currentX;
+          --this.currentBlock.x;
           return true;
         }
         return false;
         break;
       case 'right':
         if ( this.valid(1, 0) ) {
-          ++this.currentX;
+          ++this.currentBlock.x;
           return true;
         }
         return false;
         break;
       case 'down':
         if ( this.valid(0, 1) ) {
-          ++this.currentY;
+          ++this.currentBlock.y;
           return true;
         }
         return false;
         break;
       case 'rotate':
-        const rotatedBlock = this.rotate(this.currentBlock);
+        const rotatedBlock = Object.assign({}, this.currentBlock);
+        rotatedBlock.shape = this.rotate(this.currentBlock.shape);
         if ( this.valid(0, 0, rotatedBlock) ) {
           this.currentBlock = rotatedBlock;
           return true;
@@ -377,15 +383,15 @@ export default class pentrix extends EventEmitter {
     }
   }
 
-  rotate() {
-    const newBlock = [];
+  rotate(shape = this.currentBlock.shape) {
+    const newBlockShape = [];
     for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
-      newBlock[y] = [];
+      newBlockShape[y] = [];
       for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
-        newBlock[y][x] = this.currentBlock[NUMBER_OF_BLOCK - 1 - x][y];
+        newBlockShape[y][x] = shape[NUMBER_OF_BLOCK - 1 - x][y];
       }
     }
-    return newBlock;
+    return newBlockShape;
   }
 
   rotateBoard(sign) {
@@ -407,15 +413,15 @@ export default class pentrix extends EventEmitter {
   valid(offsetX, offsetY, newBlock) {
     offsetX = offsetX || 0;
     offsetY = offsetY || 0;
-    const nextX = this.currentX + offsetX;
-    const nextY = this.currentY + offsetY;
+    const nextX = this.currentBlock.x + offsetX;
+    const nextY = this.currentBlock.y + offsetY;
     const block = newBlock || this.currentBlock;
     
     for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
       for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
         const boardX = x + nextX;
         const boardY = y + nextY;
-        if (!block[y][x]) continue;
+        if (!block.shape[y][x]) continue;
         if ( typeof this.board[boardY] === 'undefined' // 次の位置が盤面外なら
           || typeof this.board[boardY][boardX] === 'undefined' // 盤面外なら
           || this.board[boardY][boardX] // 次の位置にブロックがあれば
@@ -435,8 +441,8 @@ export default class pentrix extends EventEmitter {
     let isGameOver = true;
     for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
       for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
-        const boardX = x + this.currentX;
-        const boardY = y + this.currentY;
+        const boardX = x + this.currentBlock.x;
+        const boardY = y + this.currentBlock.y;
         if (boardY >= HIDDEN_ROWS) {
           isGameOver = false;
           break;
@@ -474,12 +480,15 @@ export default class pentrix extends EventEmitter {
 
   renderCurrentBlock() {
     // 操作ブロックを描画する
+    if (!this.currentBlock.shape || !this.currentBlock.shape.length) {
+      return;
+    }
     for (let y = 0; y < NUMBER_OF_BLOCK; ++y) {
       for (let x = 0; x < NUMBER_OF_BLOCK; ++x) {
-        const blockId = this.currentBlock[y][x] - 1;
-        if (!this.currentBlock[y][x] || blockId < 0) continue;
-        const drawX = x + this.currentX;
-        const drawY = y + this.currentY - HIDDEN_ROWS;
+        const blockId = this.currentBlock.id;
+        if (!this.currentBlock.shape[y][x] || blockId < 0) continue;
+        const drawX = x + this.currentBlock.x;
+        const drawY = y + this.currentBlock.y - HIDDEN_ROWS;
         this.drawBlock(drawX, drawY, blockId);
       }
     }
@@ -488,10 +497,13 @@ export default class pentrix extends EventEmitter {
   renderNextBlock() {
     // Nextブロック描画
     this.ctxNext.clearRect(0, 0, NEXT_WIDTH, NEXT_HEIGHT);
+    if (!this.nextBlock.shape || !this.nextBlock.shape.length) {
+      return;
+    }
     for (let y = 0; y < NUMBER_OF_BLOCK; ++y) {
       for (let x = 0; x < NUMBER_OF_BLOCK; ++x) {
-        const blockId = this.nextBlock[y][x] - 1;
-        if (!this.nextBlock[y][x] || blockId < 0) continue;
+        const blockId = this.nextBlock.id;
+        if (!this.nextBlock.shape[y][x] || blockId < 0) continue;
         this.drawNextBlock(x, y, blockId);
       }
     }
@@ -501,7 +513,7 @@ export default class pentrix extends EventEmitter {
     const blockX = BLOCK_SIZE * x;
     const blockY = BLOCK_SIZE * y;
     const blockSize = BLOCK_SIZE;
-    this.ctx.fillStyle = COLOR_LIST[id];
+    this.ctx.fillStyle = BLOCK_LIST[id].color;
     this.ctx.fillRect( blockX, blockY, blockSize, blockSize );
     this.ctx.strokeRect( blockX, blockY, blockSize, blockSize );
   }
@@ -510,7 +522,7 @@ export default class pentrix extends EventEmitter {
     const blockX = BLOCK_SIZE * x;
     const blockY = BLOCK_SIZE * y;
     const blockSize = BLOCK_SIZE;
-    this.ctxNext.fillStyle = COLOR_LIST[id];
+    this.ctxNext.fillStyle = BLOCK_LIST[id].color;
     this.ctxNext.fillRect( blockX, blockY, blockSize, blockSize );
     this.ctxNext.strokeRect( blockX, blockY, blockSize, blockSize );
   }
