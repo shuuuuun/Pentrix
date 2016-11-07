@@ -26,6 +26,8 @@ import {
   BLOCK_LIST,
 } from '../constants';
 
+const ALL_BLOCK_LIST = BLOCK_LIST.concat([CLEARLINE_BLOCK, GAMEOVER_BLOCK]);
+
 export default class pentrix extends EventEmitter {
   constructor(opts = {}) {
     super();
@@ -406,18 +408,15 @@ export default class pentrix extends EventEmitter {
     return newBoard;
   }
 
-  valid(offsetX, offsetY, newBlock) {
-    offsetX = offsetX || 0;
-    offsetY = offsetY || 0;
+  valid(offsetX = 0, offsetY = 0, block = this.currentBlock) {
     const nextX = this.currentBlock.x + offsetX;
     const nextY = this.currentBlock.y + offsetY;
-    const block = newBlock || this.currentBlock;
     
     for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
       for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
         const boardX = x + nextX;
         const boardY = y + nextY;
-        if (!block.shape[y][x]) continue;
+        if (!block.shape || !block.shape[y][x]) continue;
         if ( typeof this.board[boardY] === 'undefined' // 次の位置が盤面外なら
           || typeof this.board[boardY][boardX] === 'undefined' // 盤面外なら
           || this.board[boardY][boardX] // 次の位置にブロックがあれば
@@ -468,7 +467,7 @@ export default class pentrix extends EventEmitter {
         const boardX = x;
         const boardY = y + HIDDEN_ROWS;
         const blockId = this.board[boardY][boardX] - 1;
-        if (!this.board[boardY][boardX] || blockId < 0) continue;
+        if (!this.board[boardY][boardX] || isNaN(blockId) || blockId < 0) continue;
         this.drawBlock(x, y, blockId);
       }
     }
@@ -482,7 +481,7 @@ export default class pentrix extends EventEmitter {
     for (let y = 0; y < NUMBER_OF_BLOCK; ++y) {
       for (let x = 0; x < NUMBER_OF_BLOCK; ++x) {
         const blockId = this.currentBlock.id;
-        if (!this.currentBlock.shape[y][x] || blockId < 0) continue;
+        if (!this.currentBlock.shape[y][x] || isNaN(blockId) || blockId < 0) continue;
         const drawX = x + this.currentBlock.x;
         const drawY = y + this.currentBlock.y - HIDDEN_ROWS;
         this.drawBlock(drawX, drawY, blockId);
@@ -499,26 +498,32 @@ export default class pentrix extends EventEmitter {
     for (let y = 0; y < NUMBER_OF_BLOCK; ++y) {
       for (let x = 0; x < NUMBER_OF_BLOCK; ++x) {
         const blockId = this.nextBlock.id;
-        if (!this.nextBlock.shape[y][x] || blockId < 0) continue;
+        if (!this.nextBlock.shape[y][x] || isNaN(blockId) || blockId < 0) continue;
         this.drawNextBlock(x, y, blockId);
       }
     }
   }
 
   drawBlock(x, y, id) {
+    if (!ALL_BLOCK_LIST[id]) {
+      return;
+    }
     const blockX = BLOCK_SIZE * x;
     const blockY = BLOCK_SIZE * y;
     const blockSize = BLOCK_SIZE;
-    this.ctx.fillStyle = BLOCK_LIST[id].color;
+    this.ctx.fillStyle = ALL_BLOCK_LIST[id].color;
     this.ctx.fillRect( blockX, blockY, blockSize, blockSize );
     this.ctx.strokeRect( blockX, blockY, blockSize, blockSize );
   }
 
   drawNextBlock(x, y, id) {
+    if (!ALL_BLOCK_LIST[id]) {
+      return;
+    }
     const blockX = BLOCK_SIZE * x;
     const blockY = BLOCK_SIZE * y;
     const blockSize = BLOCK_SIZE;
-    this.ctxNext.fillStyle = BLOCK_LIST[id].color;
+    this.ctxNext.fillStyle = ALL_BLOCK_LIST[id].color;
     this.ctxNext.fillRect( blockX, blockY, blockSize, blockSize );
     this.ctxNext.strokeRect( blockX, blockY, blockSize, blockSize );
   }
