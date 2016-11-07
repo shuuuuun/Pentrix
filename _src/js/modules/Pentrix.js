@@ -18,8 +18,6 @@ import {
   SPEEDUP_RATE,
   START_X,
   START_Y,
-  CLEARLINE_BLOCK_INDEX,
-  GAMEOVER_BLOCK_INDEX,
   BG_COLOR,
   DEFAULT_DROP_DIRECTION,
   KEYS,
@@ -276,7 +274,7 @@ export default class pentrix extends EventEmitter {
     const effect = (x, y) => {
       return () => {
         const d = $.Deferred();
-        this.board[y][x] = CLEARLINE_BLOCK_INDEX;
+        this.board[y][x] = CLEARLINE_BLOCK.id + 1;
         d.resolve();
         return d.promise();
       };
@@ -326,7 +324,7 @@ export default class pentrix extends EventEmitter {
     const effect = (x, y) => {
       return () => {
         const d = $.Deferred();
-        this.board[y][x] = GAMEOVER_BLOCK_INDEX;
+        this.board[y][x] = GAMEOVER_BLOCK.id + 1;
         this.emit('gameOverEffectTick');
         d.resolve();
         return d.promise();

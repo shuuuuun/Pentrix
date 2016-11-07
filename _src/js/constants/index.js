@@ -19,9 +19,6 @@ export const SPEEDUP_RATE = 10;
 export const START_X = Math.floor((COLS - NUMBER_OF_BLOCK) / 2);
 export const START_Y = 0;
 
-export const CLEARLINE_BLOCK_INDEX = 14;
-export const GAMEOVER_BLOCK_INDEX = 15;
-
 export const BG_COLOR = '#888';
 export const DEFAULT_DROP_DIRECTION = 'down';
 
@@ -34,12 +31,12 @@ export const KEYS = {
 };
 
 export const CLEARLINE_BLOCK = {
-  id: 9,
+  id: 7,
   color: '#aaa',
 };
 
 export const GAMEOVER_BLOCK = {
-  id: 10,
+  id: 8,
   color: '#777',
 };
 
