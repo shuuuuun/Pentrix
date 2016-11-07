@@ -24,23 +24,6 @@ export const GAMEOVER_BLOCK_INDEX = 15;
 
 export const BG_COLOR = '#888';
 export const DEFAULT_DROP_DIRECTION = 'down';
-export const COLOR_LIST = [
-  '#FF6666',
-  '#FFCC66',
-  '#FFFF66',
-  '#CCFF66',
-  '#66FF66',
-  '#66FFCC',
-  '#66FFFF',
-  '#66CCFF',
-  '#6666FF',
-  '#CC66FF',
-  '#FF66FF',
-  '#FF6FCF',
-  '#FF00FF',
-  '#FF8000',
-  '#4C4C4C',
-];
 
 export const KEYS = {
   37: 'left',  // ←
@@ -136,12 +119,6 @@ export const BLOCK_LIST = [
       [1, 1, 1, 1, 0],
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
-    ],
-  },
-  {
-    id: 7,
-    color: '#66CCFF',
-    shape: [
     ],
   },
 ];

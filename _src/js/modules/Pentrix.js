@@ -22,13 +22,11 @@ import {
   GAMEOVER_BLOCK_INDEX,
   BG_COLOR,
   DEFAULT_DROP_DIRECTION,
-  COLOR_LIST,
   KEYS,
   CLEARLINE_BLOCK,
   GAMEOVER_BLOCK,
   BLOCK_LIST,
 } from '../constants';
-import SHAPE_LIST from '../constants/SHAPE_LIST';
 
 export default class pentrix extends EventEmitter {
   constructor(opts = {}) {
