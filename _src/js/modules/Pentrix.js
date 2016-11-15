@@ -280,7 +280,7 @@ export default class pentrix extends EventEmitter {
         d.resolve();
         return d.promise();
       };
-    }
+    };
     const dropRow = () => {
       return () => {
         const d = $.Deferred();
@@ -292,7 +292,7 @@ export default class pentrix extends EventEmitter {
         d.resolve();
         return d.promise();
       };
-    }
+    };
     
     for ( let y = LOGICAL_ROWS - 1; y >= 0; --y ) {
       const isRowFilled = this.board[y].every((val) => val !== 0);
@@ -331,7 +331,7 @@ export default class pentrix extends EventEmitter {
         d.resolve();
         return d.promise();
       };
-    }
+    };
     
     for ( let y = 0; y < LOGICAL_ROWS; ++y ) {
       for ( let x = 0; x < COLS; ++x ) {
