@@ -1,7 +1,7 @@
-export const COLS = 20;
-export const ROWS = 20;
+export const COLS = 15;
+export const ROWS = 15;
 
-export const BLOCK_SIZE = 20;
+export const BLOCK_SIZE = 25;
 export const NUMBER_OF_BLOCK = 5;
 
 export const HIDDEN_ROWS = NUMBER_OF_BLOCK;
