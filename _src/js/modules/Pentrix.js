@@ -453,10 +453,13 @@ export default class pentrix extends EventEmitter {
   // View ------------------------------
   render() {
     this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    this.ctxNext.clearRect(0, 0, NEXT_WIDTH, NEXT_HEIGHT);
     
     // background
     this.ctx.fillStyle = BG_COLOR;
     this.ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    this.ctxNext.fillStyle = BG_COLOR;
+    this.ctxNext.fillRect(0, 0, NEXT_WIDTH, NEXT_HEIGHT);
     
     this.renderBoard();
     this.renderCurrentBlock();
@@ -494,7 +497,6 @@ export default class pentrix extends EventEmitter {
 
   renderNextBlock() {
     // Nextブロック描画
-    this.ctxNext.clearRect(0, 0, NEXT_WIDTH, NEXT_HEIGHT);
     if (!this.nextBlock.shape || !this.nextBlock.shape.length) {
       return;
     }
