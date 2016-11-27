@@ -2,8 +2,11 @@ import Pentrix from './modules/Pentrix';
 
 
 // Init
-const pentrix = new Pentrix();
 const container = document.querySelector('.container');
+const gameRoot = document.getElementById('game-root');
+const pentrix = new Pentrix({
+  rootElement: gameRoot
+});
 
 
 // Event
