@@ -20,7 +20,6 @@ export const START_X = Math.floor((COLS - NUMBER_OF_BLOCK) / 2);
 export const START_Y = 0;
 
 export const BG_COLOR = '#888';
-export const DEFAULT_DROP_DIRECTION = 'down';
 
 export const KEYS = {
   37: 'left',  // ←

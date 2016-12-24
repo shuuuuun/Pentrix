@@ -65,11 +65,6 @@ export default class pentrix extends EventEmitter {
     this.ctxNext.strokeStyle = BG_COLOR;
   }
 
-  rotateWorld(sign = 1) { // 1 or -1
-    this.worldDirection += sign;
-    this.cnvs.style.transform = `rotate(${this.worldDirection * 90}deg)`;
-  }
-  
   // Controller ------------------------------
   setBlurEvent() {
     window.addEventListener('blur', () => {
@@ -148,8 +143,6 @@ export default class pentrix extends EventEmitter {
     this.isPlayng = false;
     this.lose = false;
     this.tickInterval = DEFAULT_TICK_INTERVAL;
-    this.dropDirection = DEFAULT_DROP_DIRECTION;
-    this.worldDirection = 0;
     this.sumOfClearLines = 0;
     this.score = 0;
     this.frameCount = 0;
@@ -220,7 +213,7 @@ export default class pentrix extends EventEmitter {
   // メインでループする関数
   tick() {
     clearTimeout(this.tickId);
-    if (!this.moveBlock(this.dropDirection)) {
+    if (!this.moveBlock('down')) {
       this.freeze();
       this.clearLines();
       if (this.checkGameOver()) {
