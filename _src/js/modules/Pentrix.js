@@ -42,9 +42,9 @@ export default class pentrix extends EventEmitter {
 
     this.initCanvasSize();
     
-    if (!opts.disableFocusControls) this.setBlurEvent();
-    if (!opts.disableKey) this.setKeyEvent();
-    if (!opts.disableTouch) this.setTouchEvent();
+    if (!opts.disableFocusControls) this.initBlurEvent();
+    if (!opts.disableKey) this.initKeyEvent();
+    if (!opts.disableTouch) this.initTouchEvent();
   }
 
   initCanvasSize() {
@@ -64,7 +64,7 @@ export default class pentrix extends EventEmitter {
   }
 
   // Controller ------------------------------
-  setBlurEvent() {
+  initBlurEvent() {
     window.addEventListener('blur', () => {
       this.pauseGame();
     }, false);
@@ -73,7 +73,7 @@ export default class pentrix extends EventEmitter {
     }, false);
   }
 
-  setKeyEvent() {
+  initKeyEvent() {
     document.addEventListener('keydown', (evt) => {
       if (typeof KEYS[evt.keyCode] === 'undefined') return;
       evt.preventDefault();
@@ -81,7 +81,7 @@ export default class pentrix extends EventEmitter {
     }, false);
   }
 
-  setTouchEvent() {
+  initTouchEvent() {
     const touch = new TouchController({
       element: this.cnvs
     });
@@ -108,13 +108,13 @@ export default class pentrix extends EventEmitter {
       // 1マスずつバリデーション（すり抜け対策）
       while (!!blockMoveX) {
         const sign = blockMoveX / Math.abs(blockMoveX); // 1 or -1
-        if (!this.valid(sign, 0)) break;
+        if (!this.validate(sign, 0)) break;
         this.currentBlock.x += sign;
         blockMoveX -= sign;
         touchStartX = info.touchX;
       }
       while (blockMoveY > 0) {
-        if (!this.valid(0, 1)) break;
+        if (!this.validate(0, 1)) break;
         this.currentBlock.y++;
         blockMoveY--;
         touchStartY = info.touchY;
@@ -361,7 +361,7 @@ export default class pentrix extends EventEmitter {
   }
 
   moveBlockLeft() {
-    const isValid = this.valid(-1, 0);
+    const isValid = this.validate(-1, 0);
     if (isValid) {
       --this.currentBlock.x;
     }
@@ -369,7 +369,7 @@ export default class pentrix extends EventEmitter {
   }
 
   moveBlockRight() {
-    const isValid = this.valid(1, 0);
+    const isValid = this.validate(1, 0);
     if (isValid) {
       ++this.currentBlock.x;
     }
@@ -377,7 +377,7 @@ export default class pentrix extends EventEmitter {
   }
 
   moveBlockDown() {
-    const isValid = this.valid(0, 1);
+    const isValid = this.validate(0, 1);
     if (isValid) {
       ++this.currentBlock.y;
     }
@@ -387,7 +387,7 @@ export default class pentrix extends EventEmitter {
   rotateBlock() {
     const rotatedBlock = Object.assign({}, this.currentBlock);
     rotatedBlock.shape = this.rotate(this.currentBlock.shape);
-    const isValid = this.valid(0, 0, rotatedBlock);
+    const isValid = this.validate(0, 0, rotatedBlock);
     if (isValid) {
       this.currentBlock = rotatedBlock;
     }
@@ -421,7 +421,7 @@ export default class pentrix extends EventEmitter {
     return newBoard;
   }
 
-  valid(offsetX = 0, offsetY = 0, block = this.currentBlock) {
+  validate(offsetX = 0, offsetY = 0, block = this.currentBlock) {
     const nextX = this.currentBlock.x + offsetX;
     const nextY = this.currentBlock.y + offsetY;
     
