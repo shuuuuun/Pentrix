@@ -427,16 +427,17 @@ export default class pentrix extends EventEmitter {
     
     for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
       for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
+        if (!block.shape || !block.shape[y][x]) {
+          continue;
+        }
         const boardX = x + nextX;
         const boardY = y + nextY;
-        if (!block.shape || !block.shape[y][x]) continue;
-        if ( typeof this.board[boardY] === 'undefined' // 次の位置が盤面外なら
-          || typeof this.board[boardY][boardX] === 'undefined' // 盤面外なら
-          || this.board[boardY][boardX] // 次の位置にブロックがあれば
-          || boardX < 0 // 左壁
-          || boardX >= COLS // 右壁
-          || boardY >= LOGICAL_ROWS ) { // 底面
-          
+        const isOutsideLeftWall = boardX < 0;
+        const isOutsideRightWall = boardX >= COLS;
+        const isUnderBottom = boardY >= LOGICAL_ROWS;
+        const isOutsideBoard = typeof this.board[boardY] === 'undefined' || typeof this.board[boardY][boardX] === 'undefined';
+        const isExistsBlock = !isOutsideBoard && !!this.board[boardY][boardX];
+        if (isOutsideLeftWall || isOutsideRightWall || isUnderBottom || isOutsideBoard || isExistsBlock) {
           return false;
         }
       }
