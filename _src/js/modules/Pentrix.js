@@ -45,8 +45,6 @@ export default class pentrix extends EventEmitter {
     if (!opts.disableFocusControls) this.setBlurEvent();
     if (!opts.disableKey) this.setKeyEvent();
     if (!opts.disableTouch) this.setTouchEvent();
-    
-    this.renderId = setInterval(() => this.render(), RENDER_INTERVAL);
   }
 
   initCanvasSize() {
