@@ -167,6 +167,7 @@ export default class pentrix extends EventEmitter {
     this.initBlock();
     this.createNextBlock();
     this.render();
+    this.emit('gameinit');
   }
 
   startGame() {
