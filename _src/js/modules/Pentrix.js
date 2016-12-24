@@ -422,8 +422,8 @@ export default class pentrix extends EventEmitter {
   }
 
   validate(offsetX = 0, offsetY = 0, block = this.currentBlock) {
-    const nextX = this.currentBlock.x + offsetX;
-    const nextY = this.currentBlock.y + offsetY;
+    const nextX = block.x + offsetX;
+    const nextY = block.y + offsetY;
     
     for ( let y = 0; y < NUMBER_OF_BLOCK; ++y ) {
       for ( let x = 0; x < NUMBER_OF_BLOCK; ++x ) {
