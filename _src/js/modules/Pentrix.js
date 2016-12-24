@@ -79,7 +79,7 @@ export default class pentrix extends EventEmitter {
     document.addEventListener('keydown', (evt) => {
       if (typeof KEYS[evt.keyCode] === 'undefined') return;
       evt.preventDefault();
-      this.moveBlock(KEYS[evt.keyCode]);
+      this.handleMethod(KEYS[evt.keyCode]);
     }, false);
   }
 
@@ -124,11 +124,30 @@ export default class pentrix extends EventEmitter {
       isTap = false;
     });
     touch.on('touchend',(info) => {
-      if (!!isTap) this.moveBlock('rotate');
+      if (!!isTap) this.rotateBlock();
     });
     this.on('freeze',() => {
       isFreeze = true;
     });
+  }
+
+  handleMethod(key) { // helper
+    switch (key) {
+      case 'left':
+        this.moveBlockLeft();
+        break;
+      case 'right':
+        this.moveBlockRight();
+        break;
+      case 'down':
+        this.moveBlockDown();
+        break;
+      case 'rotate':
+        this.rotateBlock();
+        break;
+      default:
+        break;
+    }
   }
 
   // Model ------------------------------
@@ -213,7 +232,7 @@ export default class pentrix extends EventEmitter {
   // メインでループする関数
   tick() {
     clearTimeout(this.tickId);
-    if (!this.moveBlock('down')) {
+    if (!this.moveBlockDown()) {
       this.freeze();
       this.clearLines();
       if (this.checkGameOver()) {
@@ -342,39 +361,38 @@ export default class pentrix extends EventEmitter {
     return dfd.then(Util.sleep(500)).promise();
   }
 
-  moveBlock(code) {
-    switch (code) {
-      case 'left':
-        if ( this.valid(-1, 0) ) {
-          --this.currentBlock.x;
-          return true;
-        }
-        return false;
-        break;
-      case 'right':
-        if ( this.valid(1, 0) ) {
-          ++this.currentBlock.x;
-          return true;
-        }
-        return false;
-        break;
-      case 'down':
-        if ( this.valid(0, 1) ) {
-          ++this.currentBlock.y;
-          return true;
-        }
-        return false;
-        break;
-      case 'rotate':
-        const rotatedBlock = Object.assign({}, this.currentBlock);
-        rotatedBlock.shape = this.rotate(this.currentBlock.shape);
-        if ( this.valid(0, 0, rotatedBlock) ) {
-          this.currentBlock = rotatedBlock;
-          return true;
-        }
-        return false;
-        break;
+  moveBlockLeft() {
+    const isValid = this.valid(-1, 0);
+    if (isValid) {
+      --this.currentBlock.x;
     }
+    return isValid;
+  }
+
+  moveBlockRight() {
+    const isValid = this.valid(1, 0);
+    if (isValid) {
+      ++this.currentBlock.x;
+    }
+    return isValid;
+  }
+
+  moveBlockDown() {
+    const isValid = this.valid(0, 1);
+    if (isValid) {
+      ++this.currentBlock.y;
+    }
+    return isValid;
+  }
+
+  rotateBlock() {
+    const rotatedBlock = Object.assign({}, this.currentBlock);
+    rotatedBlock.shape = this.rotate(this.currentBlock.shape);
+    const isValid = this.valid(0, 0, rotatedBlock);
+    if (isValid) {
+      this.currentBlock = rotatedBlock;
+    }
+    return isValid;
   }
 
   rotate(shape = this.currentBlock.shape) {
