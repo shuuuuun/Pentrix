@@ -34,11 +34,13 @@ export const KEYS = {
 export const CLEARLINE_BLOCK = {
   id: 7,
   color: '#aaa',
+  image: '/img/block_8.png',
 };
 
 export const GAMEOVER_BLOCK = {
   id: 8,
   color: '#777',
+  image: '/img/block_9.png',
 };
 
 export const BLOCK_LIST = [
@@ -46,35 +48,42 @@ export const BLOCK_LIST = [
     id: 0,
     color: '#FF6666',
     shape: SHAPE_LIST[0],
+    image: '/img/block_1.png',
   },
   {
     id: 1,
     color: '#FFCC66',
     shape: SHAPE_LIST[1],
+    image: '/img/block_2.png',
   },
   {
     id: 2,
     color: '#FFFF66',
     shape: SHAPE_LIST[2],
+    image: '/img/block_3.png',
   },
   {
     id: 3,
     color: '#CCFF66',
     shape: SHAPE_LIST[3],
+    image: '/img/block_4.png',
   },
   {
     id: 4,
     color: '#66FF66',
     shape: SHAPE_LIST[4],
+    image: '/img/block_5.png',
   },
   {
     id: 5,
     color: '#66FFCC',
     shape: SHAPE_LIST[5],
+    image: '/img/block_6.png',
   },
   {
     id: 6,
     color: '#66FFFF',
     shape: SHAPE_LIST[6],
+    image: '/img/block_7.png',
   },
 ];

@@ -26,8 +26,14 @@ import {
   BLOCK_LIST,
 } from './constants';
 
-const ALL_BLOCK_LIST = BLOCK_LIST.concat([CLEARLINE_BLOCK, GAMEOVER_BLOCK]);
 const BLANK_ROW = Array.apply(null, Array(COLS)).map(() => 0); // [0,0,0,0,0,...]
+const ALL_BLOCK_LIST = BLOCK_LIST.concat([CLEARLINE_BLOCK, GAMEOVER_BLOCK]);
+const BLOCK_IMAGE_LIST = ALL_BLOCK_LIST.map(block => {
+  if (!block.image) return null;
+  const img = new Image();
+  img.src = block.image;
+  return img;
+});
 
 export default class Pentrix extends EventEmitter {
   constructor(opts = {}) {
@@ -537,9 +543,14 @@ export default class Pentrix extends EventEmitter {
     const blockX = BLOCK_SIZE * x;
     const blockY = BLOCK_SIZE * y;
     const blockSize = BLOCK_SIZE;
-    this.ctx.fillStyle = ALL_BLOCK_LIST[id].color;
-    this.ctx.fillRect( blockX, blockY, blockSize, blockSize );
-    this.ctx.strokeRect( blockX, blockY, blockSize, blockSize );
+    if (BLOCK_IMAGE_LIST[id]) {
+      this.ctx.drawImage(BLOCK_IMAGE_LIST[id], blockX, blockY, blockSize, blockSize);
+    }
+    else {
+      this.ctx.fillStyle = ALL_BLOCK_LIST[id].color;
+      this.ctx.fillRect( blockX, blockY, blockSize, blockSize );
+      this.ctx.strokeRect( blockX, blockY, blockSize, blockSize );
+    }
   }
 
   drawNextBlock(x, y, id) {
@@ -549,9 +560,14 @@ export default class Pentrix extends EventEmitter {
     const blockX = BLOCK_SIZE * x;
     const blockY = BLOCK_SIZE * y;
     const blockSize = BLOCK_SIZE;
-    this.ctxNext.fillStyle = ALL_BLOCK_LIST[id].color;
-    this.ctxNext.fillRect( blockX, blockY, blockSize, blockSize );
-    this.ctxNext.strokeRect( blockX, blockY, blockSize, blockSize );
+    if (BLOCK_IMAGE_LIST[id]) {
+      this.ctxNext.drawImage(BLOCK_IMAGE_LIST[id], blockX, blockY, blockSize, blockSize);
+    }
+    else {
+      this.ctxNext.fillStyle = ALL_BLOCK_LIST[id].color;
+      this.ctxNext.fillRect( blockX, blockY, blockSize, blockSize );
+      this.ctxNext.strokeRect( blockX, blockY, blockSize, blockSize );
+    }
   }
 }
 
