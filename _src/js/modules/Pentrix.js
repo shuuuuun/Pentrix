@@ -27,6 +27,7 @@ import {
 } from '../constants';
 
 const ALL_BLOCK_LIST = BLOCK_LIST.concat([CLEARLINE_BLOCK, GAMEOVER_BLOCK]);
+const BLANK_ROW = Array.apply(null, Array(COLS)).map(() => 0); // [0,0,0,0,0,...]
 
 export default class pentrix extends EventEmitter {
   constructor(opts = {}) {
@@ -281,7 +282,6 @@ export default class pentrix extends EventEmitter {
   }
 
   clearLines() {
-    const blankRow = Array.apply(null, Array(COLS)).map(() => 0); // => [0,0,0,0,0,...]
     let clearLineLength = 0; // 同時消去ライン数
     let filledRowList = [];
     let dfd = $.Deferred();
@@ -301,7 +301,7 @@ export default class pentrix extends EventEmitter {
         if (!filledRowList.length) return;
         filledRowList.reverse().forEach((row) => {
           this.board.splice(row, 1);
-          this.board.unshift(blankRow);
+          this.board.unshift(BLANK_ROW);
         });
         d.resolve();
         return d.promise();
@@ -406,7 +406,6 @@ export default class pentrix extends EventEmitter {
   }
 
   rotateBoard(sign) {
-    const blankRow = Array.apply(null, Array(COLS)).map(() => 0); // => [0,0,0,0,0,...]
     const newBoard = [];
     for ( let y = 0; y < ROWS; ++y ) {
       newBoard[y] = [];
@@ -415,7 +414,7 @@ export default class pentrix extends EventEmitter {
       }
     }
     for (let i = 0; i < HIDDEN_ROWS; ++i) {
-      newBoard.unshift(blankRow);
+      newBoard.unshift(BLANK_ROW);
     }
     this.board = newBoard;
     return newBoard;
