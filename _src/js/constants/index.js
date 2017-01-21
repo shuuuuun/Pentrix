@@ -6,9 +6,9 @@ export const NUMBER_OF_BLOCK = 4;
 export const NEXT_WIDTH = BLOCK_SIZE * NUMBER_OF_BLOCK;
 export const NEXT_HEIGHT = BLOCK_SIZE * NUMBER_OF_BLOCK;
 
-export const RENDER_INTERVAL = 30;
-export const DEFAULT_TICK_INTERVAL = 500;
-export const SPEEDUP_RATE = 10;
+export const RENDER_INTERVAL = 100;
+export const DEFAULT_TICK_INTERVAL = 800;
+export const SPEEDUP_RATE = 0;
 
 export const BG_COLOR = '#111';
 
