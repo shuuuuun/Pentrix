@@ -37,6 +37,7 @@ const HEIGHT = ROWS * blockSize;
 
 const START_X = Math.floor((COLS - NUMBER_OF_BLOCK) / 2);
 const START_Y = 0;
+const randomStartX = () => Math.floor(Math.random() * (COLS - NUMBER_OF_BLOCK));
 
 export default class pentrix extends EventEmitter {
   constructor(opts = {}) {
@@ -225,7 +226,7 @@ export default class pentrix extends EventEmitter {
   createCurrentBlock() {
     if (!this.nextBlock) this.createNextBlock();
     this.currentBlock = this.nextBlock;
-    this.currentBlock.x = START_X;
+    this.currentBlock.x = randomStartX();
     this.currentBlock.y = START_Y;
     this.emit('currentblockcreated');
   }
