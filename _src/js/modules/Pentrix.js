@@ -157,7 +157,7 @@ export default class pentrix extends EventEmitter {
 
   initGame() {
     clearTimeout(this.tickId);
-    clearInterval(this.renderId);
+    this.stopRender();
     this.isPlayng = false;
     this.lose = false;
     this.tickInterval = DEFAULT_TICK_INTERVAL;
@@ -175,7 +175,7 @@ export default class pentrix extends EventEmitter {
     this.isPlayng = true;
     this.createCurrentBlock();
     this.createNextBlock();
-    this.renderId = setInterval(() => this.render(), RENDER_INTERVAL);
+    this.startRender();
     this.emit('gamestart');
     this.tick();
   }
@@ -262,11 +262,13 @@ export default class pentrix extends EventEmitter {
 
   pauseGame() {
     clearTimeout(this.tickId);
+    this.stopRender();
   }
 
   resumeGame() {
     if (!this.isPlayng) return;
     this.tickId = setTimeout(() => this.tick(), this.tickInterval);
+    this.startRender();
   }
 
   freeze() {
@@ -461,6 +463,15 @@ export default class pentrix extends EventEmitter {
   }
 
   // View ------------------------------
+  startRender() {
+    // TODO: change to requestAnimationFrame
+    this.renderId = setInterval(() => this.render(), RENDER_INTERVAL);
+  }
+
+  stopRender() {
+    clearInterval(this.renderId);
+  }
+
   render() {
     this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
     this.ctxNext.clearRect(0, 0, NEXT_WIDTH, NEXT_HEIGHT);
