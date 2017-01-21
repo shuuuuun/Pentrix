@@ -10,7 +10,7 @@ export const RENDER_INTERVAL = 30;
 export const DEFAULT_TICK_INTERVAL = 500;
 export const SPEEDUP_RATE = 10;
 
-export const BG_COLOR = '#888';
+export const BG_COLOR = '#111';
 
 export const KEYS = {
   37: 'left',  // ←
