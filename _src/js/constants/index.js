@@ -1,7 +1,7 @@
-import SHAPE_LIST from './SHAPE_LIST_5';
+import SHAPE_LIST from './SHAPE_LIST_4';
 
 export const BLOCK_SIZE = 100;
-export const NUMBER_OF_BLOCK = 5;
+export const NUMBER_OF_BLOCK = 4;
 
 export const NEXT_WIDTH = BLOCK_SIZE * NUMBER_OF_BLOCK;
 export const NEXT_HEIGHT = BLOCK_SIZE * NUMBER_OF_BLOCK;
