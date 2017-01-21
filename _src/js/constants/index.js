@@ -1,4 +1,4 @@
-import SHAPE_LIST from './SHAPE_LIST';
+import SHAPE_LIST from './SHAPE_LIST_5';
 
 export const COLS = 15;
 export const ROWS = 15;
