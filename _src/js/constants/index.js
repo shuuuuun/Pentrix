@@ -1,25 +1,14 @@
 import SHAPE_LIST from './SHAPE_LIST_5';
 
-export const COLS = 15;
-export const ROWS = 15;
-
-export const BLOCK_SIZE = 25;
+export const BLOCK_SIZE = 100;
 export const NUMBER_OF_BLOCK = 5;
 
-export const HIDDEN_ROWS = NUMBER_OF_BLOCK;
-export const LOGICAL_ROWS = ROWS + HIDDEN_ROWS;
-
-export const WIDTH = BLOCK_SIZE * COLS;
-export const HEIGHT = BLOCK_SIZE * ROWS;
 export const NEXT_WIDTH = BLOCK_SIZE * NUMBER_OF_BLOCK;
 export const NEXT_HEIGHT = BLOCK_SIZE * NUMBER_OF_BLOCK;
 
 export const RENDER_INTERVAL = 30;
 export const DEFAULT_TICK_INTERVAL = 500;
 export const SPEEDUP_RATE = 10;
-
-export const START_X = Math.floor((COLS - NUMBER_OF_BLOCK) / 2);
-export const START_Y = 0;
 
 export const BG_COLOR = '#888';
 

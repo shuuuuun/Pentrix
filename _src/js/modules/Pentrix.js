@@ -3,21 +3,13 @@ import EventEmitter from 'events';
 import Util from './Util';
 import TouchController from './TouchController';
 import {
-  COLS,
-  ROWS,
   BLOCK_SIZE,
   NUMBER_OF_BLOCK,
-  HIDDEN_ROWS,
-  LOGICAL_ROWS,
-  WIDTH,
-  HEIGHT,
   NEXT_WIDTH,
   NEXT_HEIGHT,
   RENDER_INTERVAL,
   DEFAULT_TICK_INTERVAL,
   SPEEDUP_RATE,
-  START_X,
-  START_Y,
   BG_COLOR,
   DEFAULT_DROP_DIRECTION,
   KEYS,
@@ -29,6 +21,23 @@ import {
 const ALL_BLOCK_LIST = BLOCK_LIST.concat([CLEARLINE_BLOCK, GAMEOVER_BLOCK]);
 const BLANK_ROW = Array.apply(null, Array(COLS)).map(() => 0); // [0,0,0,0,0,...]
 
+const WIN_W = window.innerWidth;
+const WIN_H = window.innerHeight;
+
+const COLS = Math.ceil(WIN_W / BLOCK_SIZE);
+const ROWS = Math.ceil(WIN_H / BLOCK_SIZE);
+
+const HIDDEN_ROWS = NUMBER_OF_BLOCK;
+const LOGICAL_ROWS = ROWS + HIDDEN_ROWS;
+
+const blockSize = WIN_W / COLS;
+
+const WIDTH = COLS * blockSize;
+const HEIGHT = ROWS * blockSize;
+
+const START_X = Math.floor((COLS - NUMBER_OF_BLOCK) / 2);
+const START_Y = 0;
+
 export default class pentrix extends EventEmitter {
   constructor(opts = {}) {
     super();
@@ -38,7 +47,6 @@ export default class pentrix extends EventEmitter {
     this.ctx = this.cnvs.getContext('2d');
     this.cnvsNext = opts.canvasNext || document.createElement('canvas');
     this.ctxNext = this.cnvsNext.getContext('2d');
-    this.rootElm.appendChild(this.cnvsNext);
     this.rootElm.appendChild(this.cnvs);
 
     this.initCanvasSize();
@@ -98,11 +106,10 @@ export default class pentrix extends EventEmitter {
       isFreeze = false;
     });
     touch.on('touchmove',(info) => {
-      // const blockMoveX = (info.moveX / BLOCK_SIZE) | 0;
       const moveX  = info.touchX - touchStartX;
       const moveY  = info.touchY - touchStartY;
-      let blockMoveX = (moveX / BLOCK_SIZE) | 0;
-      let blockMoveY = (moveY / BLOCK_SIZE) | 0;
+      let blockMoveX = (moveX / blockSize) | 0;
+      let blockMoveY = (moveY / blockSize) | 0;
       
       if (isFreeze) return;
       
@@ -534,9 +541,8 @@ export default class pentrix extends EventEmitter {
     if (!ALL_BLOCK_LIST[id]) {
       return;
     }
-    const blockX = BLOCK_SIZE * x;
-    const blockY = BLOCK_SIZE * y;
-    const blockSize = BLOCK_SIZE;
+    const blockX = blockSize * x;
+    const blockY = blockSize * y;
     this.ctx.fillStyle = ALL_BLOCK_LIST[id].color;
     this.ctx.fillRect( blockX, blockY, blockSize, blockSize );
     this.ctx.strokeRect( blockX, blockY, blockSize, blockSize );
@@ -546,9 +552,8 @@ export default class pentrix extends EventEmitter {
     if (!ALL_BLOCK_LIST[id]) {
       return;
     }
-    const blockX = BLOCK_SIZE * x;
-    const blockY = BLOCK_SIZE * y;
-    const blockSize = BLOCK_SIZE;
+    const blockX = blockSize * x;
+    const blockY = blockSize * y;
     this.ctxNext.fillStyle = ALL_BLOCK_LIST[id].color;
     this.ctxNext.fillRect( blockX, blockY, blockSize, blockSize );
     this.ctxNext.strokeRect( blockX, blockY, blockSize, blockSize );
