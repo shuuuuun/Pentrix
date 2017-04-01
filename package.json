@@ -7,6 +7,8 @@
     "node": ">=6.0.0"
   },
   "scripts": {
+    "start": "npm run watch",
+    "watch": "watchify --verbose -o dist/Pentrix.js src/Pentrix.js",
     "grunt-version": "grunt --version",
     "grunt-release-major": "grunt release:major",
     "grunt-release-minor": "grunt release:minor",
@@ -14,8 +16,21 @@
     "grunt-release-prerelease": "grunt release:prerelease"
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.24.0",
+    "babelify": "^7.3.0",
     "grunt": "^1.0.1",
-    "grunt-release": "^0.14.0"
+    "grunt-release": "^0.14.0",
+    "watchify": "^3.9.0"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   },
   "main": "index.js",
   "repository": "https://github.com/shuuuuun/pentrix.git"
