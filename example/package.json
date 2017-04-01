@@ -1,10 +1,10 @@
 {
-  "name": "Pentrix",
-  "version": "1.0.0",
+  "name": "pentrix",
+  "version": "0.0.0",
   "author": "motoki shun",
   "license": "MIT",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=6.0.0"
   },
   "scripts": {
     "start": "gulp",

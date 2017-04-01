@@ -1,8 +1,10 @@
 {
-  "name": "Pentrix",
+  "name": "pentrix",
   "version": "0.0.0",
   "author": "motoki shun",
   "license": "MIT",
+  "main": "pentrix.min.js",
+  "repository": "https://github.com/shuuuuun/pentrix.git",
   "engines": {
     "node": ">=6.0.0"
   },
@@ -33,7 +35,5 @@
     "presets": [
       "es2015"
     ]
-  },
-  "main": "index.js",
-  "repository": "https://github.com/shuuuuun/pentrix.git"
+  }
 }
