@@ -6,6 +6,7 @@ module.exports = function(grunt) {
         push: false,
         pushTags: false,
         npm: false,
+        tagName: 'v<%= version %>',
       }
     }
   });
