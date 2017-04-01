@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "npm run watch",
-    "watch": "watchify --verbose -o dist/Pentrix.js src/Pentrix.js",
+    "watch": "watchify --verbose -o 'uglifyjs > dist/Pentrix.js' src/Pentrix.js",
     "grunt-version": "grunt --version",
     "grunt-release-major": "grunt release:major",
     "grunt-release-minor": "grunt release:minor",
@@ -21,6 +21,7 @@
     "grunt": "^1.0.1",
     "grunt-release": "^0.14.0",
     "jquery-deferred": "^0.3.1",
+    "uglify-js": "^2.8.20",
     "watchify": "^3.9.0"
   },
   "browserify": {
