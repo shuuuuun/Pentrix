@@ -7,6 +7,7 @@ module.exports = function(grunt) {
         pushTags: false,
         npm: false,
         tagName: 'v<%= version %>',
+        commitMessage: 'release v<%= version %>',
       }
     }
   });
