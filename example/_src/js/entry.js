@@ -1,6 +1,3 @@
-import Pentrix from './modules/Pentrix';
-
-
 // Init
 const container = document.querySelector('.container');
 const gameRoot = document.getElementById('game-root');
