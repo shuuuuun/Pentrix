@@ -1,0 +1,22 @@
+{
+  "name": "Pentrix",
+  "version": "0.0.2-0",
+  "author": "motoki shun",
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "grunt-version": "grunt --version",
+    "grunt-release-major": "grunt release:major",
+    "grunt-release-minor": "grunt release:minor",
+    "grunt-release-patch": "grunt release:patch",
+    "grunt-release-prerelease": "grunt release:prerelease"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-release": "^0.14.0"
+  },
+  "main": "index.js",
+  "repository": "https://github.com/shuuuuun/pentrix.git"
+}
