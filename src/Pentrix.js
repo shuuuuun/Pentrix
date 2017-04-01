@@ -29,7 +29,7 @@ import {
 const ALL_BLOCK_LIST = BLOCK_LIST.concat([CLEARLINE_BLOCK, GAMEOVER_BLOCK]);
 const BLANK_ROW = Array.apply(null, Array(COLS)).map(() => 0); // [0,0,0,0,0,...]
 
-export default class pentrix extends EventEmitter {
+export default class Pentrix extends EventEmitter {
   constructor(opts = {}) {
     super();
     
@@ -554,3 +554,5 @@ export default class pentrix extends EventEmitter {
     this.ctxNext.strokeRect( blockX, blockY, blockSize, blockSize );
   }
 }
+
+window.Pentrix = Pentrix;
