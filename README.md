@@ -6,6 +6,11 @@ Play: https://shuuuuun.github.io/pentrix/
 
 --
 
+And its library.  
+https://cdn.rawgit.com/shuuuuun/pentrix/v0.0.3/pentrix.min.js
+
+--
+
 special thanks: https://github.com/dionyziz/canvas-tetris
 
 --
