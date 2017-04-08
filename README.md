@@ -4,6 +4,8 @@ This is simple puzzle game, like tetris.
 
 Play: https://shuuuuun.github.io/pentrix/
 
+--
+
 And its library.  
 https://cdn.rawgit.com/shuuuuun/pentrix/v0.0.3/pentrix.min.js
 
