@@ -1,6 +1,6 @@
 {
   "name": "pentrix",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "motoki shun",
   "license": "MIT",
   "main": "pentrix.min.js",
