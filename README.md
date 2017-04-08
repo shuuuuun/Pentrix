@@ -7,7 +7,7 @@ Play: https://shuuuuun.github.io/pentrix/
 --
 
 And its library.  
-https://cdn.rawgit.com/shuuuuun/pentrix/v0.0.5/pentrix.min.js
+https://cdn.rawgit.com/shuuuuun/pentrix/v0.0.6/pentrix.min.js
 
 
 ### Special Thanks
