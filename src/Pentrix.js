@@ -48,7 +48,8 @@ export default class Pentrix extends EventEmitter {
     this.rootElm.appendChild(this.cnvs);
 
     this.initCanvasSize();
-    
+
+    this.blockImageList = opts.useDefaultImage ? BLOCK_IMAGE_LIST.slice() : [];
     if (!opts.disableFocusControls) this.initBlurEvent();
     if (!opts.disableKey) this.initKeyEvent();
     if (!opts.disableTouch) this.initTouchEvent();
@@ -543,8 +544,8 @@ export default class Pentrix extends EventEmitter {
     const blockX = BLOCK_SIZE * x;
     const blockY = BLOCK_SIZE * y;
     const blockSize = BLOCK_SIZE;
-    if (BLOCK_IMAGE_LIST[id]) {
-      this.ctx.drawImage(BLOCK_IMAGE_LIST[id], blockX, blockY, blockSize, blockSize);
+    if (this.blockImageList[id]) {
+      this.ctx.drawImage(this.blockImageList[id], blockX, blockY, blockSize, blockSize);
     }
     else {
       this.ctx.fillStyle = ALL_BLOCK_LIST[id].color;
@@ -560,8 +561,8 @@ export default class Pentrix extends EventEmitter {
     const blockX = BLOCK_SIZE * x;
     const blockY = BLOCK_SIZE * y;
     const blockSize = BLOCK_SIZE;
-    if (BLOCK_IMAGE_LIST[id]) {
-      this.ctxNext.drawImage(BLOCK_IMAGE_LIST[id], blockX, blockY, blockSize, blockSize);
+    if (this.blockImageList[id]) {
+      this.ctxNext.drawImage(this.blockImageList[id], blockX, blockY, blockSize, blockSize);
     }
     else {
       this.ctxNext.fillStyle = ALL_BLOCK_LIST[id].color;
