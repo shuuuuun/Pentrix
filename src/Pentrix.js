@@ -49,7 +49,7 @@ export default class Pentrix extends EventEmitter {
 
     this.initCanvasSize();
 
-    this.blockImageList = opts.useDefaultImage ? BLOCK_IMAGE_LIST.slice() : [];
+    this.blockImageList = opts.blockImageList || opts.useDefaultImage ? BLOCK_IMAGE_LIST.slice() : [];
     if (!opts.disableFocusControls) this.initBlurEvent();
     if (!opts.disableKey) this.initKeyEvent();
     if (!opts.disableTouch) this.initTouchEvent();
