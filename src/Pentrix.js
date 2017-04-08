@@ -28,12 +28,6 @@ import {
 
 const BLANK_ROW = Array.apply(null, Array(COLS)).map(() => 0); // [0,0,0,0,0,...]
 const ALL_BLOCK_LIST = BLOCK_LIST.concat([CLEARLINE_BLOCK, GAMEOVER_BLOCK]);
-const BLOCK_IMAGE_LIST = ALL_BLOCK_LIST.map(block => {
-  if (!block.image) return null;
-  const img = new Image();
-  img.src = block.image;
-  return img;
-});
 
 export default class Pentrix extends EventEmitter {
   constructor(opts = {}) {
@@ -49,7 +43,7 @@ export default class Pentrix extends EventEmitter {
 
     this.initCanvasSize();
 
-    this.blockImageList = opts.blockImageList || opts.useDefaultImage ? BLOCK_IMAGE_LIST.slice() : [];
+    this.blockImageList = opts.blockImageList || [];
     if (!opts.disableFocusControls) this.initBlurEvent();
     if (!opts.disableKey) this.initKeyEvent();
     if (!opts.disableTouch) this.initTouchEvent();
